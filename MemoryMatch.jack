@@ -17,8 +17,13 @@ class MemoryMatch {
     }
 
     method void run() {
-        if (gameState = 0) {
-            do mainMenu.draw();
+        var boolean run;
+        let run = true;
+
+        while(run) {
+            if (gameState = 0) {
+                do mainMenu.draw();
+            }
         }
 
         return;

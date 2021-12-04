@@ -242,4 +242,38 @@ class Font {
 
         return;
     }
+
+    method void drawArrow(int location) {
+        let memAddress = 16384+location;
+
+        do Memory.poke(memAddress+0, 128);
+        do Memory.poke(memAddress+32, 384);
+        do Memory.poke(memAddress+64, 896);
+        do Memory.poke(memAddress+96, 1920);
+        do Memory.poke(memAddress+128, 3968);
+        do Memory.poke(memAddress+160, 3968);
+        do Memory.poke(memAddress+192, 1920);
+        do Memory.poke(memAddress+224, 896);
+        do Memory.poke(memAddress+256, 384);
+        do Memory.poke(memAddress+288, 128);
+
+        return;
+    }
+
+    method void drawBlankArrow(int location) {
+        let memAddress = 16384+location;
+
+        do Memory.poke(memAddress+0, 0);
+        do Memory.poke(memAddress+32, 0);
+        do Memory.poke(memAddress+64, 0);
+        do Memory.poke(memAddress+96, 0);
+        do Memory.poke(memAddress+128, 0);
+        do Memory.poke(memAddress+160, 0);
+        do Memory.poke(memAddress+192, 0);
+        do Memory.poke(memAddress+224, 0);
+        do Memory.poke(memAddress+256, 0);
+        do Memory.poke(memAddress+288, 0);
+
+        return;
+    }
 }
