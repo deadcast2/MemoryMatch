@@ -1,0 +1,57 @@
+class MainMenu {
+	field Font font;
+	field int offset;
+
+    constructor MainMenu new() {
+		let font = Font.new();
+		let offset = 0;
+
+        return this;
+    }
+
+    method void dispose() {
+		do font.dispose();
+        do Memory.deAlloc(this);
+
+        return;
+    }
+
+    method void draw() {
+		do drawHeader();
+		do drawDifficulties();
+
+        return;
+    }
+
+	method void drawDifficulties() {
+		do Output.moveCursor(12, 30);
+		do Output.printString("EASY");
+		
+		do Output.moveCursor(14, 29);
+		do Output.printString("MEDIUM");
+
+		do Output.moveCursor(16, 30);
+		do Output.printString("HARD");
+
+		return;
+	}
+
+	method void drawHeader() {
+		let offset = 480 * 6 + 10;
+
+		do font.drawM(0 + offset);
+		do font.drawE(1 + offset);
+		do font.drawM(2 + offset);
+		do font.drawO(3 + offset);
+		do font.drawR(4 + offset);
+		do font.drawY(5 + offset);
+		do font.drawSpace(6 + offset);
+		do font.drawM(7 + offset);
+		do font.drawA(8 + offset);
+		do font.drawT(9 + offset);
+		do font.drawC(10 + offset);
+		do font.drawH(11 + offset);
+
+        return;
+    }
+}

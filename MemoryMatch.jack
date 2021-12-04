@@ -1,0 +1,26 @@
+class MemoryMatch {
+    field int gameState;
+    field MainMenu mainMenu;
+
+    constructor MemoryMatch new() {
+        let gameState = 0;
+        let mainMenu = MainMenu.new();
+
+        return this;
+    }
+
+    method void dispose() {
+        do mainMenu.dispose();
+        do Memory.deAlloc(this);
+        
+        return;
+    }
+
+    method void run() {
+        if (gameState = 0) {
+            do mainMenu.draw();
+        }
+
+        return;
+    }
+}
