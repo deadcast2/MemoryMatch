@@ -83,6 +83,11 @@ class GameBoard {
 			if (temp > -1) {
 				let selectedCard = temp;
 			}
+
+			// Jump to next row
+			if (temp < 0) {
+				let selectedCard = cardCount + temp;
+			}
 		}   
 
         // Down arrow
@@ -91,6 +96,11 @@ class GameBoard {
 
 			if (temp < cardCount) {
 				let selectedCard = temp;
+			}
+
+			// Jump to next row
+			if (temp > (cardCount - 1)) {
+				let selectedCard = temp - cardCount;
 			}
 		}  
         
