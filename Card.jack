@@ -17,15 +17,56 @@ class Card {
 
 	method void draw() {
 		do drawBorder();
-
 		do drawSymbol();
 
 		return;
 	}
 
-	method void drawBorder() {
+	method void select() {
+		do Screen.setColor(true);
+		do drawSelection();
+
+		return;
+	}
+
+	method void unselect() {
+		do Screen.setColor(false);
+		do drawSelection();
+
+		return;
+	}
+
+	method void drawSelection() {
+		var int x, y;
 		var int width, height;
+
+		let width = 48;
+		let height = 64;
+		let x = (width * col) + 16;
+		let y = (height * row) + 14;
+
+		// Top line
+		do Screen.drawLine(x, y, width + x, y);
+		do Screen.drawLine(x, y + 1, width + x, y + 1);
+
+		// Bottom line
+		do Screen.drawLine(x, height + y, width + x, height + y);
+		do Screen.drawLine(x, height + y - 1, width + x, height + y - 1);
+
+		// Left line
+		do Screen.drawLine(x, y, x, height + y);
+		do Screen.drawLine(x + 1, y, x + 1, height + y);
+
+		// Right line
+		do Screen.drawLine(width + x, y, width + x, height + y);
+		do Screen.drawLine(width + x - 1, y, width + x - 1, height + y);
+
+		return;
+	}
+
+	method void drawBorder() {
 		var int x, y, margin;
+		var int width, height;
 
 		let width = 48;
 		let height = 64;

@@ -2,9 +2,12 @@ class GameBoard {
 	field int difficulty;
 	field Array cards;
 	field int cardCount;
+	field int selectedCard;
+	field int columnBreak;
 
     constructor GameBoard new(int Adifficulty) {
 		let difficulty = Adifficulty;
+		let selectedCard = 0;
 		
 		if (difficulty = 0) {
 			let cardCount = 12;
@@ -43,14 +46,80 @@ class GameBoard {
     }
 	
 	method void run() {
+      	var char key;
+		var boolean running;
+
+		let running = true;
+
 		do drawBorder();
 		do drawCards();
+
+		while (running) {
+			while (key = 0) {
+            	let key = Keyboard.keyPressed();
+         	}
+			
+			do updateSelection(key);
+
+			while (~(key = 0)) {
+				let key = Keyboard.keyPressed();
+			}
+		}
+
+		return;
+	}
+
+	method void updateSelection(int key) {
+		var Card current;
+		var int temp;
+
+		let current = cards[selectedCard];
+		do current.unselect();
+
+		// Up arrow
+		if (key = 131) { 
+			let temp = selectedCard - columnBreak;
+
+			if (temp > -1) {
+				let selectedCard = temp;
+			}
+		}   
+
+        // Down arrow
+		if (key = 133) { 
+			let temp = selectedCard + columnBreak;
+
+			if (temp < cardCount) {
+				let selectedCard = temp;
+			}
+		}  
+        
+		// Left arrow
+		if (key = 130) { 
+			let selectedCard = selectedCard - 1;
+
+			if(selectedCard < 0) {
+				let selectedCard = cardCount - 1;
+			}
+		}   
+        
+		// Right arrow
+		if (key = 132) { 
+			let selectedCard = selectedCard + 1;
+
+			if(selectedCard = cardCount) {
+				let selectedCard = 0;
+			}
+		}   
+
+		let current = cards[selectedCard];
+		do current.select();
 
 		return;
 	}
 
 	method void createCards() {
-		var int index, row, col, columnBreak, columnStart;
+		var int index, row, col, columnStart;
 		var Card current;
 
 		let cards = Array.new(cardCount);
@@ -71,7 +140,14 @@ class GameBoard {
 				let row = row + 1;
 			}
 			
-			let cards[index] = Card.new(0, row, col + columnStart);
+			let cards[index] = Card.new(0, row, col + columnStart);			
+
+			// Select first card by default.
+			if (index = 0) {
+				let current = cards[index];
+				do current.select();
+			}
+
 			let index = index + 1;
 			let col = col + 1;
 		}
