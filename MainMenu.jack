@@ -20,6 +20,7 @@ class MainMenu {
 	method int wait() {
 		do drawHeader();
 		do drawDifficulties();
+		do drawInstructions();
 		do drawSelector(false);
 		do handleSelection();
 
@@ -91,16 +92,16 @@ class MainMenu {
 		let verticalOffset = 13;
 
 		// Hard
-		let offset = 96 * 59 + verticalOffset;
+		let offset = 96 * 55 + verticalOffset;
 		
 		// Easy
 		if (difficulty = 0) {
-			let offset = 192 * 22 + verticalOffset;
+			let offset = 128 * 30 + verticalOffset;
 		} 
 		
 		// Medium
 		if (difficulty = 1) {
-			let offset = 160 * 31 + verticalOffset;
+			let offset = 128 * 36 + verticalOffset;
 		} 
 
 		do font.drawArrow(offset);
@@ -113,15 +114,23 @@ class MainMenu {
 	}
 
 	method void drawDifficulties() {
-		do Output.moveCursor(12, 30);
+		do Output.moveCursor(11, 30);
 		do Output.printString("EASY");
 		
-		do Output.moveCursor(14, 29);
+		do Output.moveCursor(13, 29);
 		do Output.printString("MEDIUM");
 
-		do Output.moveCursor(16, 30);
+		do Output.moveCursor(15, 30);
 		do Output.printString("HARD");
 
+		return;
+	}
+
+	method void drawInstructions() {
+		do Screen.drawLine(5, 210, 507, 210);
+		do Output.moveCursor(20, 1);
+		do Output.printString("Find all matching cards by using the arrow keys to choose and   the enter key to flip. Have fun!");
+		
 		return;
 	}
 
@@ -130,7 +139,7 @@ class MainMenu {
 		var int offset;
 
 		let verticalOffset = 10;
-		let offset = 480 * 6 + verticalOffset;
+		let offset = 480 * 5 + verticalOffset;
 
 		do font.drawM(0 + offset);
 		do font.drawE(1 + offset);
