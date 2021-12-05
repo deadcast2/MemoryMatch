@@ -1,12 +1,13 @@
 class Card {
 	field int type, row, col;
-	field boolean flipped;
+	field boolean flipped, isMatched;
 
     constructor Card new(int Atype, int Arow, int Acol) {
 		let type = Atype;
 		let row = Arow;
 		let col = Acol;
 		let flipped = false;
+		let isMatched = false;
 
         return this;
     }
@@ -42,12 +43,20 @@ class Card {
 		return;
 	}
 
-	method void flip() {
+	method boolean flip() {
+		if (isMatched) {
+			return false;
+		}
+
 		let flipped = ~flipped;
 		
 		do drawSymbol();
 		
-		return;
+		return flipped;
+	}
+
+	method boolean getIsFlipped() {
+		return flipped;
 	}
 
 	method int getType() {
@@ -57,6 +66,16 @@ class Card {
 	method void setType(int Atype) {
 		let type = Atype;
 		
+		return;
+	}
+
+	method bool getIsMatched() {
+		return isMatched;
+	}
+
+	method void matched() {
+		let isMatched = true;
+
 		return;
 	}
 

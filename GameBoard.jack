@@ -6,11 +6,15 @@ class GameBoard {
 	field int columnBreak;
 	field Array cards;
 	field Timer timer;
+	field Card lastFlippedCard;
+	field Card nullCard;
 
     constructor GameBoard new(int Adifficulty, int ASeed) {
 		let difficulty = Adifficulty;
 		let seed = ASeed;
 		let selectedCard = 0;
+		let nullCard = Card.new(999, 0, 0);
+		let lastFlippedCard = nullCard;
 		
 		if (difficulty = 0) {
 			let cardCount = 12;
@@ -51,6 +55,7 @@ class GameBoard {
 
 		do timer.dispose();
 		do cards.dispose();
+		do nullCard.dispose();
 		do Screen.clearScreen();
         do Memory.deAlloc(this);
 
@@ -158,7 +163,32 @@ class GameBoard {
 		// Enter
 		if (key = 128) {
 			let current = cards[selectedCard];
-			do current.flip();
+
+			if (current.getIsMatched()) {
+				return;
+			}
+
+			if (lastFlippedCard.getIsFlipped()) {
+				if (current.flip()) {
+					if (lastFlippedCard.getType() = current.getType()) {
+						do lastFlippedCard.matched();
+						do current.matched();
+					}
+
+					if (~(lastFlippedCard.getType() = current.getType())) {
+						do Sys.wait(400);
+
+						do lastFlippedCard.flip();
+						do current.flip();
+					}
+				}
+
+				let lastFlippedCard = nullCard;
+				return;
+			}
+
+			let lastFlippedCard = current;
+			do lastFlippedCard.flip();
 		}
 		
 		return;
