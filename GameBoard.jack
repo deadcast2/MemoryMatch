@@ -21,6 +21,7 @@ class GameBoard {
 			let cardCount = 30;
 		}
 
+		do drawBorder();
 		do createCards();
 
         return this;
@@ -50,9 +51,6 @@ class GameBoard {
 		var boolean running;
 
 		let running = true;
-
-		do drawBorder();
-		do drawCards();
 
 		while (running) {
 			while (key = 0) {
@@ -160,21 +158,6 @@ class GameBoard {
 
 			let index = index + 1;
 			let col = col + 1;
-		}
-
-		return;
-	}
-
-	method void drawCards() {
-		var int index;
-		var Card current;
-
-		let index = 0;
-
-		while (index < cardCount) {
-			let current = cards[index];
-			do current.draw();
-			let index = index + 1;
 		}
 
 		return;

@@ -6,6 +6,8 @@ class Card {
 		let row = Arow;
 		let col = Acol;
 
+		do draw();
+
         return this;
     }
 
