@@ -1,0 +1,60 @@
+class SeedGenerator {
+    field String label;
+
+    constructor SeedGenerator new() {     
+        let label = "Please press some keys to generate seed...";
+
+        do Output.moveCursor(10, 12);
+        do Output.printString(label);
+        do drawProgressBar(0);       
+
+        return this;
+    }
+
+    method void dispose() {
+        do label.dispose();
+        do Screen.clearScreen();
+        do Memory.deAlloc(this);
+        
+        return;
+    }
+
+    method void drawProgressBar(int progress) {
+        var int x, y, width, height;
+
+        let x = 206;
+        let y = 135;
+        let width = 100;
+        let height = 10;
+
+        do Screen.drawLine(x, y, x + width, y);
+        do Screen.drawLine(x, y+height, x + width, y+height);
+        do Screen.drawLine(x, y, x, y+height);
+        do Screen.drawLine(x+width, y, x+width, y+height);
+        do Screen.drawRectangle(x, y, x + (progress * 10), y + height);
+
+        return;
+    }
+
+    method int wait() {
+        var int keysPressed, keyTotal, key;
+        let keysPressed = 0;
+
+        while (keysPressed < 10) {
+            while (key = 0) {
+            	let key = Keyboard.keyPressed();
+         	}
+
+            let keyTotal = keyTotal + key;
+            let keysPressed = keysPressed + 1;
+
+            do drawProgressBar(keysPressed);
+
+			while (~(key = 0)) {
+				let key = Keyboard.keyPressed();
+			}
+        }   
+
+        return Math.max(100, Math.min(keyTotal, 2500));
+    }
+}

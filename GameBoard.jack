@@ -1,13 +1,15 @@
 class GameBoard {
 	field int difficulty;
+	field int seed;
 	field int cardCount;
 	field int selectedCard;
 	field int columnBreak;
 	field Array cards;
 	field Timer timer;
 
-    constructor GameBoard new(int Adifficulty) {
+    constructor GameBoard new(int Adifficulty, int ASeed) {
 		let difficulty = Adifficulty;
+		let seed = ASeed;
 		let selectedCard = 0;
 		
 		if (difficulty = 0) {
@@ -28,6 +30,8 @@ class GameBoard {
 
 		do drawBorder();
 		do createCards();
+		do shuffleCards();
+		do drawCards();
 
         return this;
     }
@@ -161,7 +165,7 @@ class GameBoard {
 	}
 
 	method void createCards() {
-		var int index, row, col, columnStart;
+		var int index, row, col, columnStart, rand;
 		var Card current;
 
 		let cards = Array.new(cardCount);
@@ -182,16 +186,57 @@ class GameBoard {
 				let row = row + 1;
 			}
 			
-			let cards[index] = Card.new(0, row, col + columnStart);			
+			// Create cards in pairs.
+			let rand = Utils.randWithPrevious(Card.symbolCount(), rand, seed / (index + col + row + 1));
+			let cards[index] = Card.new(rand, row, col + columnStart);			
+			let cards[index + 1] = Card.new(rand, row, col + columnStart + 1);			
+			
+			let current = cards[index+1];
+			do current.flip();
 
+			let current = cards[index];
+			do current.flip();
+			
 			// Select first card by default.
 			if (index = 0) {
-				let current = cards[index];
 				do current.select();
 			}
 
+			let index = index + 2;
+			let col = col + 2;
+		}
+
+		return;
+	}
+
+	method void shuffleCards() {
+		var int index, temp, rand;
+		var Card current, next;
+
+		while (index < cardCount) {			
+			let current = cards[index];
+			let temp = current.getType();
+
+			let rand = Utils.randWithPrevious(cardCount, rand, seed / (index + 1));
+			let next = cards[rand];
+			do current.setType(next.getType());
+			do next.setType(temp);
+
 			let index = index + 1;
-			let col = col + 1;
+		}
+
+		return;
+	}
+
+	method void drawCards() {
+		var int index;
+		var Card current;
+
+		while (index < cardCount) {			
+			let current = cards[index];
+			let index = index + 1;
+			
+			do current.draw();
 		}
 
 		return;

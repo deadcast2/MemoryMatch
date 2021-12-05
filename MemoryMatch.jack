@@ -2,7 +2,8 @@ class MemoryMatch {
     function void run() {
         var MainMenu mainMenu;
         var GameBoard gameBoard;
-        var int difficulty;
+        var SeedGenerator seedGenerator;
+        var int difficulty, seed;
 
         while (true) {
             // Main Menu
@@ -10,8 +11,13 @@ class MemoryMatch {
             let difficulty = mainMenu.wait();
             do mainMenu.dispose();
 
+            // Seed Generation
+            let seedGenerator = SeedGenerator.new();
+            let seed = seedGenerator.wait();
+            do seedGenerator.dispose();
+
             // Game Board
-            let gameBoard = GameBoard.new(difficulty);
+            let gameBoard = GameBoard.new(difficulty, seed);
             do gameBoard.wait();
             do gameBoard.dispose();
         }
