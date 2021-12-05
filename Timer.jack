@@ -1,0 +1,37 @@
+class Timer {
+    field int length;
+    field int tick;
+    field String label;
+
+    constructor Timer new(int Alength) {
+        let length = Alength;
+        let tick = 25001;
+        let label = "Timer: ";
+
+        do Output.moveCursor(21, 2);
+        do Output.printString(label);
+
+        return this;
+    }
+
+    method void dispose() {
+        do label.dispose();
+        do Memory.deAlloc(this);
+        
+        return;
+    }
+
+    method void draw() {
+        let tick = tick + 1;
+
+        if (tick > 25000) {
+            do Output.moveCursor(21, 9);
+            do Output.printInt(length);
+
+            let length = length - 1;
+            let tick = 0;
+        }
+
+        return;
+    }
+}
