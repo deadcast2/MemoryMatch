@@ -46,7 +46,7 @@ class GameBoard {
         return;
     }
 	
-	method void run() {
+	method void wait() {
       	var char key;
 		var boolean running;
 

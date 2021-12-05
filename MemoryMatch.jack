@@ -14,18 +14,15 @@ class MemoryMatch {
     }
 
     method void run() {
-        var boolean running;
-        var int difficulty;
         var MainMenu mainMenu;
         var GameBoard gameBoard;
-        
-        let running = true;
+        var int difficulty;
 
-        while (running) {
+        while (true) {
             // Main Menu
             if (gameState = 0) {
                 let mainMenu = MainMenu.new();
-                let difficulty = mainMenu.run();
+                let difficulty = mainMenu.wait();
                 let gameState = 1;
                 do mainMenu.dispose();
             }
@@ -33,7 +30,7 @@ class MemoryMatch {
             // Game Board
             if (gameState = 1) {
                 let gameBoard = GameBoard.new(difficulty);
-                do gameBoard.run();
+                do gameBoard.wait();
                 do gameBoard.dispose();
             }
         }
