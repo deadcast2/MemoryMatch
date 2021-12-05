@@ -8,6 +8,8 @@ class GameBoard {
 	field Timer timer;
 	field Card lastFlippedCard;
 	field Card nullCard;
+	field String winLabel, loseLabel;
+	field boolean running;
 
     constructor GameBoard new(int Adifficulty, int ASeed) {
 		let difficulty = Adifficulty;
@@ -15,6 +17,8 @@ class GameBoard {
 		let selectedCard = 0;
 		let nullCard = Card.new(999, 0, 0);
 		let lastFlippedCard = nullCard;
+		let winLabel = "You win!";
+		let loseLabel = "You ran out of time. Try again!";
 		
 		if (difficulty = 0) {
 			let cardCount = 12;
@@ -56,6 +60,8 @@ class GameBoard {
 		do timer.dispose();
 		do cards.dispose();
 		do nullCard.dispose();
+		do winLabel.dispose();
+		do loseLabel.dispose();
 		do Screen.clearScreen();
         do Memory.deAlloc(this);
 
@@ -64,7 +70,6 @@ class GameBoard {
 	
 	method void wait() {
       	var char key;
-		var boolean running;
 
 		let running = true;
 
@@ -173,6 +178,7 @@ class GameBoard {
 					if (lastFlippedCard.getType() = current.getType()) {
 						do lastFlippedCard.matched();
 						do current.matched();
+						do gameFinished();
 					}
 
 					if (~(lastFlippedCard.getType() = current.getType())) {
@@ -191,6 +197,30 @@ class GameBoard {
 			do lastFlippedCard.flip();
 		}
 		
+		return;
+	}
+
+	method void gameFinished() {
+		var int index;
+		var Card current;
+
+		let index = 0;
+
+		while (index < cardCount) {
+			let current = cards[index];
+			
+			if (~(current.getIsMatched())) {
+				return;
+			}
+
+			let index = index + 1;
+		}
+
+		do Output.printString(winLabel);
+		do Sys.wait(1000);
+
+		let running = false;
+
 		return;
 	}
 
