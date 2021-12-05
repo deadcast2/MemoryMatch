@@ -3,10 +3,18 @@ class GameBoard {
 	field Array cards;
 	field int cardCount;
 
-    constructor GameBoard new(int difficulty) {
-		let difficulty = difficulty;
+    constructor GameBoard new(int Adifficulty) {
+		let difficulty = Adifficulty;
 		
 		if (difficulty = 0) {
+			let cardCount = 12;
+		}
+
+		if (difficulty = 1) {
+			let cardCount = 20;
+		}
+
+		if (difficulty = 2) {
 			let cardCount = 30;
 		}
 
@@ -33,32 +41,40 @@ class GameBoard {
 
         return;
     }
-
-	method void createCards() {
-		var int index;
-		var int row, col;
-		var Card current;
-
-		let cards = Array.new(cardCount);
-		let index = 0;
-
-		while (index < cardCount) {
-			if (col = 10) {
-				let col = 0;
-				let row = row + 1;
-			}
-			
-			let cards[index] = Card.new(0, row, col);
-			let index = index + 1;
-			let col = col + 1;
-		}
+	
+	method void run() {
+		do drawBorder();
+		do drawCards();
 
 		return;
 	}
 
-	method void run() {
-		do drawBorder();
-		do drawCards();
+	method void createCards() {
+		var int index, row, col, columnBreak, columnStart;
+		var Card current;
+
+		let cards = Array.new(cardCount);
+		let index = 0;
+		let columnStart = 0;
+		let columnBreak = 10;
+
+		// Setup a smaller card layout
+		if (difficulty = 0) {
+			let columnBreak = 6;
+			let columnStart = 2;
+		}
+
+		while (index < cardCount) {
+			// Go to next line when break point reached
+			if (col = columnBreak) {
+				let col = 0;
+				let row = row + 1;
+			}
+			
+			let cards[index] = Card.new(0, row, col + columnStart);
+			let index = index + 1;
+			let col = col + 1;
+		}
 
 		return;
 	}

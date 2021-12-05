@@ -1,6 +1,5 @@
 class Card {
-	field int type;
-	field int row, col;
+	field int type, row, col;
 
     constructor Card new(int Atype, int Arow, int Acol) {
 		let type = Atype;
@@ -17,17 +16,20 @@ class Card {
     }
 
 	method void draw() {
-		var int width;
-		var int height;
-		var int margin;
-		var int x;
-		var int y;
-		var int verticalOffset;
+		do drawBorder();
+
+		do drawSymbol();
+
+		return;
+	}
+
+	method void drawBorder() {
+		var int width, height;
+		var int x, y, margin;
 
 		let width = 48;
 		let height = 64;
 		let margin = 8;
-
 		let x = (width * col) + 12;
 		let y = (height * row) + 10;
 
@@ -43,9 +45,17 @@ class Card {
 		// Right line
 		do Screen.drawLine(width + x, y + margin, width + x, height + y);
 
+		return;
+	}
+
+	method void drawSymbol() {
+		var int x, y;
+		var int verticalOffset;
+
 		let verticalOffset = getSymbolVerticalOffset();
 		let x = col + (2 * (col + 1));
 		let y = (row + (3 * (row + 1))) * verticalOffset;
+
 		do drawCardTop(x + y);
 
 		return;
