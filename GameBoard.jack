@@ -191,14 +191,9 @@ class GameBoard {
 			let cards[index] = Card.new(rand, row, col + columnStart);			
 			let cards[index + 1] = Card.new(rand, row, col + columnStart + 1);			
 			
-			let current = cards[index+1];
-			do current.flip();
-
-			let current = cards[index];
-			do current.flip();
-			
 			// Select first card by default.
 			if (index = 0) {
+				let current = cards[index];
 				do current.select();
 			}
 
