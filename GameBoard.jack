@@ -69,6 +69,8 @@ class GameBoard {
 			
 			do updateSelection(key);
 
+			do flipCard(key);
+
 			while (~(key = 0)) {
 				let key = Keyboard.keyPressed();
 				do timer.draw();
@@ -143,6 +145,18 @@ class GameBoard {
 		let current = cards[selectedCard];
 		do current.select();
 
+		return;
+	}
+
+	method void flipCard(int key) {
+		var Card current;
+
+		// Enter
+		if (key = 128) {
+			let current = cards[selectedCard];
+			do current.flip();
+		}
+		
 		return;
 	}
 
