@@ -1,28 +1,40 @@
 class MemoryMatch {
     field int gameState;
-    field MainMenu mainMenu;
 
     constructor MemoryMatch new() {
         let gameState = 0;
-        let mainMenu = MainMenu.new();
 
         return this;
     }
 
-    method void dispose() {
-        do mainMenu.dispose();
+    method void dispose() {     
         do Memory.deAlloc(this);
         
         return;
     }
 
     method void run() {
-        var boolean run;
-        let run = true;
+        var boolean running;
+        var int difficulty;
+        var MainMenu mainMenu;
+        var GameBoard gameBoard;
+        
+        let running = true;
 
-        while(run) {
+        while (running) {
+            // Main Menu
             if (gameState = 0) {
-                do mainMenu.draw();
+                let mainMenu = MainMenu.new();
+                let difficulty = mainMenu.run();
+                let gameState = 1;
+                do mainMenu.dispose();
+            }
+
+            // Game Board
+            if (gameState = 1) {
+                let gameBoard = GameBoard.new(difficulty);
+                do gameBoard.run();
+                do gameBoard.dispose();
             }
         }
 

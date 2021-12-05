@@ -1,0 +1,96 @@
+class GameBoard {
+	field int difficulty;
+	field Array cards;
+	field int cardCount;
+
+    constructor GameBoard new(int difficulty) {
+		let difficulty = difficulty;
+		
+		if (difficulty = 0) {
+			let cardCount = 30;
+		}
+
+		do createCards();
+
+        return this;
+    }
+
+    method void dispose() {
+		var int index;
+		var Card current;
+
+		let index = 0;
+
+		// Clean up cards
+		while (index < cardCount) {
+			let current = cards[index];
+			do current.dispose();
+			let index = index + 1;
+		}
+
+		do cards.dispose();
+        do Memory.deAlloc(this);
+
+        return;
+    }
+
+	method void createCards() {
+		var int index;
+		var int row, col;
+		var Card current;
+
+		let cards = Array.new(cardCount);
+		let index = 0;
+
+		while (index < cardCount) {
+			if (col = 10) {
+				let col = 0;
+				let row = row + 1;
+			}
+			
+			let cards[index] = Card.new(0, row, col);
+			let index = index + 1;
+			let col = col + 1;
+		}
+
+		return;
+	}
+
+	method void run() {
+		do drawBorder();
+		do drawCards();
+
+		return;
+	}
+
+	method void drawCards() {
+		var int index;
+		var Card current;
+
+		let index = 0;
+
+		while (index < cardCount) {
+			let current = cards[index];
+			do current.draw();
+			let index = index + 1;
+		}
+
+		return;
+	}
+
+	method void drawBorder() {
+		// Top line
+		do Screen.drawLine(8, 8, 502, 8);
+
+		// Bottom line
+		do Screen.drawLine(8, 248, 504, 248);
+
+		// Left line
+		do Screen.drawLine(8, 8, 8, 248);
+
+		// Right line
+		do Screen.drawLine(504, 8, 504, 248);
+		
+		return;
+	}
+}

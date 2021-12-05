@@ -1,0 +1,85 @@
+class Card {
+	field int type;
+	field int row, col;
+
+    constructor Card new(int Atype, int Arow, int Acol) {
+		let type = Atype;
+		let row = Arow;
+		let col = Acol;
+
+        return this;
+    }
+
+    method void dispose() {
+        do Memory.deAlloc(this);
+
+        return;
+    }
+
+	method void draw() {
+		var int width;
+		var int height;
+		var int margin;
+		var int x;
+		var int y;
+		var int verticalOffset;
+
+		let width = 48;
+		let height = 64;
+		let margin = 8;
+
+		let x = (width * col) + 12;
+		let y = (height * row) + 10;
+
+		// Top line
+		do Screen.drawLine(x + margin, y + margin, width + x, y + margin);
+
+		// Bottom line
+		do Screen.drawLine(x + margin, height + y, width + x, height + y);
+
+		// Left line
+		do Screen.drawLine(x + margin, y + margin, x + margin, height + y);
+
+		// Right line
+		do Screen.drawLine(width + x, y + margin, width + x, height + y);
+
+		let verticalOffset = getSymbolVerticalOffset();
+		let x = col + (2 * (col + 1));
+		let y = (row + (3 * (row + 1))) * verticalOffset;
+		do drawCardTop(x + y);
+
+		return;
+	}
+
+	method int getSymbolVerticalOffset() {
+		if (row = 0) {
+			return 416;
+		}
+
+		return 480;
+	}
+
+	method void drawCardTop(int location) {
+		var int memAddress;
+		let memAddress = 16384+location;
+
+		do Memory.poke(memAddress+0, 0);
+		do Memory.poke(memAddress+32, 4032);
+		do Memory.poke(memAddress+64, 6240);
+		do Memory.poke(memAddress+96, 4144);
+		do Memory.poke(memAddress+128, 12304);
+		do Memory.poke(memAddress+160, 12304);
+		do Memory.poke(memAddress+192, 4144);
+		do Memory.poke(memAddress+224, 6240);
+		do Memory.poke(memAddress+256, 3584);
+		do Memory.poke(memAddress+288, 768);
+		do Memory.poke(memAddress+320, 384);
+		do Memory.poke(memAddress+352, 384);
+		do Memory.poke(memAddress+384, 0);
+		do Memory.poke(memAddress+416, 384);
+		do Memory.poke(memAddress+448, 384);
+		do Memory.poke(memAddress+480, 0);
+
+		return;
+	}
+}

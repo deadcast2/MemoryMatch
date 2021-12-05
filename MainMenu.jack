@@ -16,25 +16,28 @@ class MainMenu {
         return;
     }
 
-	method void draw() {
+	method int run() {
 		do drawHeader();
 		do drawDifficulties();
 		do drawSelector(false);
 		do handleSelection();
+        do Screen.clearScreen();
 
-		return;
+		return difficulty;
 	}
 
 	method void handleSelection() {
 		var char key;
-		var boolean running;
-		
-		let running = true;
+		var boolean selecting;
 
-		while (running) {
+		let selecting = true;
+
+		while (selecting) {
 			while (key = 0) {
             	let key = Keyboard.keyPressed();
 			}
+
+			let selecting = madeSelection(key);
 
 			do drawSelector(true);
 
@@ -48,6 +51,15 @@ class MainMenu {
 		}
 
 		return;
+	}
+
+	method boolean madeSelection(int key) {
+		// Enter
+		if (key = 128) {
+			return false;
+		}
+
+		return true;
 	}
 
 	method void moveSelector(int key) {
