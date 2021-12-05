@@ -41,6 +41,7 @@ class GameBoard {
 		}
 
 		do cards.dispose();
+		do Screen.clearScreen();
         do Memory.deAlloc(this);
 
         return;
@@ -56,6 +57,8 @@ class GameBoard {
 			while (key = 0) {
             	let key = Keyboard.keyPressed();
          	}
+
+			let running = wantsToQuit(key);
 			
 			do updateSelection(key);
 
@@ -65,6 +68,15 @@ class GameBoard {
 		}
 
 		return;
+	}
+
+	method boolean wantsToQuit(int key) {
+		// Escape key
+		if (key = 140) {
+			return false;
+		}
+
+		return true;
 	}
 
 	method void updateSelection(int key) {

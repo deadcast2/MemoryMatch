@@ -11,6 +11,7 @@ class MainMenu {
 
     method void dispose() {
 		do font.dispose();
+        do Screen.clearScreen();
         do Memory.deAlloc(this);
 
         return;
@@ -21,7 +22,6 @@ class MainMenu {
 		do drawDifficulties();
 		do drawSelector(false);
 		do handleSelection();
-        do Screen.clearScreen();
 
 		return difficulty;
 	}

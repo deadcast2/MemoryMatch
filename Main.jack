@@ -1,11 +1,7 @@
 class Main {
     function void main() {
-        var MemoryMatch game;
-        let game = MemoryMatch.new();
+        do MemoryMatch.run();
         
-        do game.run();
-        do game.dispose();
-
         return;
     }
 }
