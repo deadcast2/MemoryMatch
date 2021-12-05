@@ -21,10 +21,10 @@ class Timer {
         return;
     }
 
-    method void draw() {
+    method boolean tick() {
         let tick = tick + 1;
 
-        if (tick > 25000) {
+        if (tick > 22000) {
             do Output.moveCursor(21, 9);
             do Output.printInt(length);
 
@@ -32,6 +32,10 @@ class Timer {
             let tick = 0;
         }
 
-        return;
+        if (length < 0) {
+            return false;
+        }
+
+        return true;
     }
 }

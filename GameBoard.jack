@@ -22,7 +22,7 @@ class GameBoard {
 		
 		if (difficulty = 0) {
 			let cardCount = 12;
-			let timer = Timer.new(90);
+			let timer = Timer.new(45);
 		}
 
 		if (difficulty = 1) {
@@ -32,7 +32,7 @@ class GameBoard {
 
 		if (difficulty = 2) {
 			let cardCount = 30;
-			let timer = Timer.new(45);
+			let timer = Timer.new(90);
 		}
 
 
@@ -76,7 +76,10 @@ class GameBoard {
 		while (running) {
 			while (key = 0) {
             	let key = Keyboard.keyPressed();
-				do timer.draw();
+				
+				if (timedOut()) {
+					return;
+				}
          	}
 
 			let running = wantsToQuit(key);
@@ -87,11 +90,27 @@ class GameBoard {
 
 			while (~(key = 0)) {
 				let key = Keyboard.keyPressed();
-				do timer.draw();
+
+				if (timedOut()) {
+					return;
+				}
 			}
 		}
 
 		return;
+	}
+
+	method boolean timedOut() {
+		if (~(timer.tick())) {
+        	do Screen.clearScreen();
+			do Output.moveCursor(10, 16);
+			do Output.printString(loseLabel);
+			do Sys.wait(3000);
+
+			return true;
+		}
+
+		return false;
 	}
 
 	method boolean wantsToQuit(int key) {
@@ -216,8 +235,10 @@ class GameBoard {
 			let index = index + 1;
 		}
 
+		do Screen.clearScreen();
+		do Output.moveCursor(10, 26);
 		do Output.printString(winLabel);
-		do Sys.wait(1000);
+		do Sys.wait(3000);
 
 		let running = false;
 
