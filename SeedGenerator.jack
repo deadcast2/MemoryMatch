@@ -1,12 +1,12 @@
 class SeedGenerator {
     field String label;
 
-    constructor SeedGenerator new() {     
+    constructor SeedGenerator new() {
         let label = "Please press some keys to generate seed...";
 
         do Output.moveCursor(10, 12);
         do Output.printString(label);
-        do drawProgressBar(0);       
+        do drawProgressBar(0);
 
         return this;
     }
@@ -15,7 +15,7 @@ class SeedGenerator {
         do label.dispose();
         do Screen.clearScreen();
         do Memory.deAlloc(this);
-        
+
         return;
     }
 
@@ -42,18 +42,18 @@ class SeedGenerator {
 
         while (keysPressed < 10) {
             while (key = 0) {
-            	let key = Keyboard.keyPressed();
-         	}
+                let key = Keyboard.keyPressed();
+             }
 
             let keyTotal = keyTotal + key;
             let keysPressed = keysPressed + 1;
 
             do drawProgressBar(keysPressed);
 
-			while (~(key = 0)) {
-				let key = Keyboard.keyPressed();
-			}
-        }   
+            while (~(key = 0)) {
+                let key = Keyboard.keyPressed();
+            }
+        }
 
         return Math.max(100, Math.min(keyTotal, 2500));
     }

@@ -17,7 +17,7 @@ class Timer {
     method void dispose() {
         do label.dispose();
         do Memory.deAlloc(this);
-        
+
         return;
     }
 
@@ -26,7 +26,7 @@ class Timer {
 
         if (tick > 20000) {
             do Output.moveCursor(21, 18);
-            
+
             // Push on additional zero to format time transition to single digit.
             if (length < 10) {
                 do Output.printInt(0);

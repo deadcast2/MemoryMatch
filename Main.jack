@@ -1,7 +1,7 @@
 class Main {
     function void main() {
         do MemoryMatch.run();
-        
+
         return;
     }
 }

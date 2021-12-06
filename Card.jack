@@ -1,20 +1,20 @@
 class Card {
-	field int type, row, col;
-	field boolean flipped, isMatched;
+    field int type, row, col;
+    field boolean flipped, isMatched;
 
     constructor Card new(int Atype, int Arow, int Acol) {
-		let type = Atype;
-		let row = Arow;
-		let col = Acol;
-		let flipped = false;
-		let isMatched = false;
+        let type = Atype;
+        let row = Arow;
+        let col = Acol;
+        let flipped = false;
+        let isMatched = false;
 
         return this;
     }
 
-	function int symbolCount() {
-		return 5;
-	}
+    function int symbolCount() {
+        return 5;
+    }
 
     method void dispose() {
         do Memory.deAlloc(this);
@@ -22,327 +22,327 @@ class Card {
         return;
     }
 
-	method void draw() {
-		do drawBorder();
-		do drawSymbol();
+    method void draw() {
+        do drawBorder();
+        do drawSymbol();
 
-		return;
-	}
+        return;
+    }
 
-	method void select() {
-		do Screen.setColor(true);
-		do drawSelection();
+    method void select() {
+        do Screen.setColor(true);
+        do drawSelection();
 
-		return;
-	}
+        return;
+    }
 
-	method void unselect() {
-		do Screen.setColor(false);
-		do drawSelection();
+    method void unselect() {
+        do Screen.setColor(false);
+        do drawSelection();
 
-		return;
-	}
+        return;
+    }
 
-	method boolean flip() {
-		if (isMatched) {
-			return false;
-		}
+    method boolean flip() {
+        if (isMatched) {
+            return false;
+        }
 
-		let flipped = ~flipped;
-		
-		do drawSymbol();
-		
-		return flipped;
-	}
+        let flipped = ~flipped;
 
-	method boolean getIsFlipped() {
-		return flipped;
-	}
+        do drawSymbol();
 
-	method int getType() {
-		return type;
-	}
+        return flipped;
+    }
 
-	method void setType(int Atype) {
-		let type = Atype;
-		
-		return;
-	}
+    method boolean getIsFlipped() {
+        return flipped;
+    }
 
-	method bool getIsMatched() {
-		return isMatched;
-	}
+    method int getType() {
+        return type;
+    }
 
-	method void matched() {
-		let isMatched = true;
+    method void setType(int Atype) {
+        let type = Atype;
 
-		return;
-	}
+        return;
+    }
 
-	method void drawSelection() {
-		var int x, y;
-		var int width, height;
+    method bool getIsMatched() {
+        return isMatched;
+    }
 
-		let width = 48;
-		let height = 64;
-		let x = (width * col) + 16;
-		let y = (height * row) + 14;
+    method void matched() {
+        let isMatched = true;
 
-		// Top line
-		do Screen.drawLine(x, y, width + x, y);
-		do Screen.drawLine(x, y + 1, width + x, y + 1);
+        return;
+    }
 
-		// Bottom line
-		do Screen.drawLine(x, height + y, width + x, height + y);
-		do Screen.drawLine(x, height + y - 1, width + x, height + y - 1);
+    method void drawSelection() {
+        var int x, y;
+        var int width, height;
 
-		// Left line
-		do Screen.drawLine(x, y, x, height + y);
-		do Screen.drawLine(x + 1, y, x + 1, height + y);
+        let width = 48;
+        let height = 64;
+        let x = (width * col) + 16;
+        let y = (height * row) + 14;
 
-		// Right line
-		do Screen.drawLine(width + x, y, width + x, height + y);
-		do Screen.drawLine(width + x - 1, y, width + x - 1, height + y);
+        // Top line
+        do Screen.drawLine(x, y, width + x, y);
+        do Screen.drawLine(x, y + 1, width + x, y + 1);
 
-		return;
-	}
+        // Bottom line
+        do Screen.drawLine(x, height + y, width + x, height + y);
+        do Screen.drawLine(x, height + y - 1, width + x, height + y - 1);
 
-	method void drawBorder() {
-		var int x, y, margin;
-		var int width, height;
+        // Left line
+        do Screen.drawLine(x, y, x, height + y);
+        do Screen.drawLine(x + 1, y, x + 1, height + y);
 
-		let width = 48;
-		let height = 64;
-		let margin = 8;
-		let x = (width * col) + 12;
-		let y = (height * row) + 10;
+        // Right line
+        do Screen.drawLine(width + x, y, width + x, height + y);
+        do Screen.drawLine(width + x - 1, y, width + x - 1, height + y);
 
-		// Top line
-		do Screen.drawLine(x + margin, y + margin, width + x, y + margin);
+        return;
+    }
 
-		// Bottom line
-		do Screen.drawLine(x + margin, height + y, width + x, height + y);
+    method void drawBorder() {
+        var int x, y, margin;
+        var int width, height;
 
-		// Left line
-		do Screen.drawLine(x + margin, y + margin, x + margin, height + y);
+        let width = 48;
+        let height = 64;
+        let margin = 8;
+        let x = (width * col) + 12;
+        let y = (height * row) + 10;
 
-		// Right line
-		do Screen.drawLine(width + x, y + margin, width + x, height + y);
+        // Top line
+        do Screen.drawLine(x + margin, y + margin, width + x, y + margin);
 
-		return;
-	}
+        // Bottom line
+        do Screen.drawLine(x + margin, height + y, width + x, height + y);
 
-	method void drawSymbol() {
-		var int x, y;
-		var int verticalOffset;
+        // Left line
+        do Screen.drawLine(x + margin, y + margin, x + margin, height + y);
 
-		let verticalOffset = getSymbolVerticalOffset();
-		let x = col + (2 * (col + 1));
-		let y = (row + (3 * (row + 1))) * verticalOffset;
+        // Right line
+        do Screen.drawLine(width + x, y + margin, width + x, height + y);
 
-		do clearSymbol(x + y);
+        return;
+    }
 
-		if (~(flipped)) {
-			do drawSymbol0(x + y);
-			return;
-		}
+    method void drawSymbol() {
+        var int x, y;
+        var int verticalOffset;
 
-		if (type = 0) {
-			do drawSymbol1(x + y);
-		}
+        let verticalOffset = getSymbolVerticalOffset();
+        let x = col + (2 * (col + 1));
+        let y = (row + (3 * (row + 1))) * verticalOffset;
 
-		if (type = 1) {
-			do drawSymbol2(x + y);
-		}
+        do clearSymbol(x + y);
 
-		if (type = 2) {
-			do drawSymbol3(x + y);
-		}
+        if (~(flipped)) {
+            do drawSymbol0(x + y);
+            return;
+        }
 
-		if (type = 3) {
-			do drawSymbol4(x + y);
-		}
+        if (type = 0) {
+            do drawSymbol1(x + y);
+        }
 
-		if (type = 4) {
-			do drawSymbol5(x + y);
-		}
+        if (type = 1) {
+            do drawSymbol2(x + y);
+        }
 
-		return;
-	}
+        if (type = 2) {
+            do drawSymbol3(x + y);
+        }
 
-	method int getSymbolVerticalOffset() {
-		if (row = 0) {
-			return 416;
-		}
+        if (type = 3) {
+            do drawSymbol4(x + y);
+        }
 
-		return 480;
-	}
+        if (type = 4) {
+            do drawSymbol5(x + y);
+        }
 
-	method void clearSymbol(int location) {
-		var int memAddress;
-		let memAddress = 16384+location;
+        return;
+    }
 
-		do Memory.poke(memAddress+0, 0);
-		do Memory.poke(memAddress+32, 0);
-		do Memory.poke(memAddress+64, 0);
-		do Memory.poke(memAddress+96, 0);
-		do Memory.poke(memAddress+128, 0);
-		do Memory.poke(memAddress+160, 0);
-		do Memory.poke(memAddress+192, 0);
-		do Memory.poke(memAddress+224, 0);
-		do Memory.poke(memAddress+256, 0);
-		do Memory.poke(memAddress+288, 0);
-		do Memory.poke(memAddress+320, 0);
-		do Memory.poke(memAddress+352, 0);
-		do Memory.poke(memAddress+384, 0);
-		do Memory.poke(memAddress+416, 0);
-		do Memory.poke(memAddress+448, 0);
-		do Memory.poke(memAddress+480, 0);
+    method int getSymbolVerticalOffset() {
+        if (row = 0) {
+            return 416;
+        }
 
-		return;
-	}
+        return 480;
+    }
 
-	method void drawSymbol0(int location) {
-		var int memAddress;
-		let memAddress = 16384+location;
+    method void clearSymbol(int location) {
+        var int memAddress;
+        let memAddress = 16384+location;
 
-		do Memory.poke(memAddress+0, 0);
-		do Memory.poke(memAddress+32, 4032);
-		do Memory.poke(memAddress+64, 6240);
-		do Memory.poke(memAddress+96, 4144);
-		do Memory.poke(memAddress+128, 12304);
-		do Memory.poke(memAddress+160, 12304);
-		do Memory.poke(memAddress+192, 4144);
-		do Memory.poke(memAddress+224, 6240);
-		do Memory.poke(memAddress+256, 3584);
-		do Memory.poke(memAddress+288, 768);
-		do Memory.poke(memAddress+320, 384);
-		do Memory.poke(memAddress+352, 384);
-		do Memory.poke(memAddress+384, 0);
-		do Memory.poke(memAddress+416, 384);
-		do Memory.poke(memAddress+448, 384);
-		do Memory.poke(memAddress+480, 0);
+        do Memory.poke(memAddress+0, 0);
+        do Memory.poke(memAddress+32, 0);
+        do Memory.poke(memAddress+64, 0);
+        do Memory.poke(memAddress+96, 0);
+        do Memory.poke(memAddress+128, 0);
+        do Memory.poke(memAddress+160, 0);
+        do Memory.poke(memAddress+192, 0);
+        do Memory.poke(memAddress+224, 0);
+        do Memory.poke(memAddress+256, 0);
+        do Memory.poke(memAddress+288, 0);
+        do Memory.poke(memAddress+320, 0);
+        do Memory.poke(memAddress+352, 0);
+        do Memory.poke(memAddress+384, 0);
+        do Memory.poke(memAddress+416, 0);
+        do Memory.poke(memAddress+448, 0);
+        do Memory.poke(memAddress+480, 0);
 
-		return;
-	}
+        return;
+    }
 
-	method void drawSymbol1(int location) {
-		var int memAddress;
-		let memAddress = 16384+location;
+    method void drawSymbol0(int location) {
+        var int memAddress;
+        let memAddress = 16384+location;
 
-		do Memory.poke(memAddress+0, 0);
-		do Memory.poke(memAddress+32, 384);
-		do Memory.poke(memAddress+64, 384);
-		do Memory.poke(memAddress+96, 384);
-		do Memory.poke(memAddress+128, 384);
-		do Memory.poke(memAddress+160, 384);
-		do Memory.poke(memAddress+192, 384);
-		do Memory.poke(memAddress+224, 32382);
-		do Memory.poke(memAddress+256, 32382);
-		do Memory.poke(memAddress+288, 384);
-		do Memory.poke(memAddress+320, 384);
-		do Memory.poke(memAddress+352, 384);
-		do Memory.poke(memAddress+384, 384);
-		do Memory.poke(memAddress+416, 384);
-		do Memory.poke(memAddress+448, 384);
-		do Memory.poke(memAddress+480, 0);
+        do Memory.poke(memAddress+0, 0);
+        do Memory.poke(memAddress+32, 4032);
+        do Memory.poke(memAddress+64, 6240);
+        do Memory.poke(memAddress+96, 4144);
+        do Memory.poke(memAddress+128, 12304);
+        do Memory.poke(memAddress+160, 12304);
+        do Memory.poke(memAddress+192, 4144);
+        do Memory.poke(memAddress+224, 6240);
+        do Memory.poke(memAddress+256, 3584);
+        do Memory.poke(memAddress+288, 768);
+        do Memory.poke(memAddress+320, 384);
+        do Memory.poke(memAddress+352, 384);
+        do Memory.poke(memAddress+384, 0);
+        do Memory.poke(memAddress+416, 384);
+        do Memory.poke(memAddress+448, 384);
+        do Memory.poke(memAddress+480, 0);
 
-		return;
-	}
+        return;
+    }
 
-	method void drawSymbol2(int location) {
-		var int memAddress;
-		let memAddress = 16384+location;
+    method void drawSymbol1(int location) {
+        var int memAddress;
+        let memAddress = 16384+location;
 
-		do Memory.poke(memAddress+0, 0);
-		do Memory.poke(memAddress+32, 960);
-		do Memory.poke(memAddress+64, 1056);
-		do Memory.poke(memAddress+96, 2064);
-		do Memory.poke(memAddress+128, 4104);
-		do Memory.poke(memAddress+160, 8196);
-		do Memory.poke(memAddress+192, 16386);
-		do Memory.poke(memAddress+224, 16770);
-		do Memory.poke(memAddress+256, 16770);
-		do Memory.poke(memAddress+288, 16386);
-		do Memory.poke(memAddress+320, 8196);
-		do Memory.poke(memAddress+352, 4104);
-		do Memory.poke(memAddress+384, 2064);
-		do Memory.poke(memAddress+416, 1056);
-		do Memory.poke(memAddress+448, 960);
-		do Memory.poke(memAddress+480, 0);
+        do Memory.poke(memAddress+0, 0);
+        do Memory.poke(memAddress+32, 384);
+        do Memory.poke(memAddress+64, 384);
+        do Memory.poke(memAddress+96, 384);
+        do Memory.poke(memAddress+128, 384);
+        do Memory.poke(memAddress+160, 384);
+        do Memory.poke(memAddress+192, 384);
+        do Memory.poke(memAddress+224, 32382);
+        do Memory.poke(memAddress+256, 32382);
+        do Memory.poke(memAddress+288, 384);
+        do Memory.poke(memAddress+320, 384);
+        do Memory.poke(memAddress+352, 384);
+        do Memory.poke(memAddress+384, 384);
+        do Memory.poke(memAddress+416, 384);
+        do Memory.poke(memAddress+448, 384);
+        do Memory.poke(memAddress+480, 0);
 
-		return;
-	}
+        return;
+    }
 
-	method void drawSymbol3(int location) {
-		var int memAddress;
-		let memAddress = 16384+location;
+    method void drawSymbol2(int location) {
+        var int memAddress;
+        let memAddress = 16384+location;
 
-		do Memory.poke(memAddress+0, 0);
-		do Memory.poke(memAddress+32, 32766);
-		do Memory.poke(memAddress+64, 16386);
-		do Memory.poke(memAddress+96, 16386);
-		do Memory.poke(memAddress+128, 16386);
-		do Memory.poke(memAddress+160, 16386);
-		do Memory.poke(memAddress+192, 16386);
-		do Memory.poke(memAddress+224, 16770);
-		do Memory.poke(memAddress+256, 16770);
-		do Memory.poke(memAddress+288, 16386);
-		do Memory.poke(memAddress+320, 16386);
-		do Memory.poke(memAddress+352, 16386);
-		do Memory.poke(memAddress+384, 16386);
-		do Memory.poke(memAddress+416, 16386);
-		do Memory.poke(memAddress+448, 32766);
-		do Memory.poke(memAddress+480, 0);
+        do Memory.poke(memAddress+0, 0);
+        do Memory.poke(memAddress+32, 960);
+        do Memory.poke(memAddress+64, 1056);
+        do Memory.poke(memAddress+96, 2064);
+        do Memory.poke(memAddress+128, 4104);
+        do Memory.poke(memAddress+160, 8196);
+        do Memory.poke(memAddress+192, 16386);
+        do Memory.poke(memAddress+224, 16770);
+        do Memory.poke(memAddress+256, 16770);
+        do Memory.poke(memAddress+288, 16386);
+        do Memory.poke(memAddress+320, 8196);
+        do Memory.poke(memAddress+352, 4104);
+        do Memory.poke(memAddress+384, 2064);
+        do Memory.poke(memAddress+416, 1056);
+        do Memory.poke(memAddress+448, 960);
+        do Memory.poke(memAddress+480, 0);
 
-		return;
-	}
+        return;
+    }
 
-	method void drawSymbol4(int location) {
-		var int memAddress;
-		let memAddress = 16384+location;
+    method void drawSymbol3(int location) {
+        var int memAddress;
+        let memAddress = 16384+location;
 
-		do Memory.poke(memAddress+0, 0);
-		do Memory.poke(memAddress+32, 448);
-		do Memory.poke(memAddress+64, 864);
-		do Memory.poke(memAddress+96, 1584);
-		do Memory.poke(memAddress+128, 3096);
-		do Memory.poke(memAddress+160, 6156);
-		do Memory.poke(memAddress+192, 12614);
-		do Memory.poke(memAddress+224, 8322);
-		do Memory.poke(memAddress+256, 12614);
-		do Memory.poke(memAddress+288, 6156);
-		do Memory.poke(memAddress+320, 3096);
-		do Memory.poke(memAddress+352, 1584);
-		do Memory.poke(memAddress+384, 864);
-		do Memory.poke(memAddress+416, 448);
-		do Memory.poke(memAddress+448, 0);
-		do Memory.poke(memAddress+480, 0);
+        do Memory.poke(memAddress+0, 0);
+        do Memory.poke(memAddress+32, 32766);
+        do Memory.poke(memAddress+64, 16386);
+        do Memory.poke(memAddress+96, 16386);
+        do Memory.poke(memAddress+128, 16386);
+        do Memory.poke(memAddress+160, 16386);
+        do Memory.poke(memAddress+192, 16386);
+        do Memory.poke(memAddress+224, 16770);
+        do Memory.poke(memAddress+256, 16770);
+        do Memory.poke(memAddress+288, 16386);
+        do Memory.poke(memAddress+320, 16386);
+        do Memory.poke(memAddress+352, 16386);
+        do Memory.poke(memAddress+384, 16386);
+        do Memory.poke(memAddress+416, 16386);
+        do Memory.poke(memAddress+448, 32766);
+        do Memory.poke(memAddress+480, 0);
 
-		return;
-	}
+        return;
+    }
 
-	method void drawSymbol5(int location) {
-		var int memAddress;
-		let memAddress = 16384+location;
+    method void drawSymbol4(int location) {
+        var int memAddress;
+        let memAddress = 16384+location;
 
-		do Memory.poke(memAddress+0, 0);
-		do Memory.poke(memAddress+32, 30750);
-		do Memory.poke(memAddress+64, 28686);
-		do Memory.poke(memAddress+96, 30750);
-		do Memory.poke(memAddress+128, 23610);
-		do Memory.poke(memAddress+160, 3696);
-		do Memory.poke(memAddress+192, 2016);
-		do Memory.poke(memAddress+224, 576);
-		do Memory.poke(memAddress+256, 576);
-		do Memory.poke(memAddress+288, 2016);
-		do Memory.poke(memAddress+320, 3696);
-		do Memory.poke(memAddress+352, 23610);
-		do Memory.poke(memAddress+384, 30750);
-		do Memory.poke(memAddress+416, 28686);
-		do Memory.poke(memAddress+448, 30750);
-		do Memory.poke(memAddress+480, 0);
+        do Memory.poke(memAddress+0, 0);
+        do Memory.poke(memAddress+32, 448);
+        do Memory.poke(memAddress+64, 864);
+        do Memory.poke(memAddress+96, 1584);
+        do Memory.poke(memAddress+128, 3096);
+        do Memory.poke(memAddress+160, 6156);
+        do Memory.poke(memAddress+192, 12614);
+        do Memory.poke(memAddress+224, 8322);
+        do Memory.poke(memAddress+256, 12614);
+        do Memory.poke(memAddress+288, 6156);
+        do Memory.poke(memAddress+320, 3096);
+        do Memory.poke(memAddress+352, 1584);
+        do Memory.poke(memAddress+384, 864);
+        do Memory.poke(memAddress+416, 448);
+        do Memory.poke(memAddress+448, 0);
+        do Memory.poke(memAddress+480, 0);
 
-		return;
-	}
+        return;
+    }
+
+    method void drawSymbol5(int location) {
+        var int memAddress;
+        let memAddress = 16384+location;
+
+        do Memory.poke(memAddress+0, 0);
+        do Memory.poke(memAddress+32, 30750);
+        do Memory.poke(memAddress+64, 28686);
+        do Memory.poke(memAddress+96, 30750);
+        do Memory.poke(memAddress+128, 23610);
+        do Memory.poke(memAddress+160, 3696);
+        do Memory.poke(memAddress+192, 2016);
+        do Memory.poke(memAddress+224, 576);
+        do Memory.poke(memAddress+256, 576);
+        do Memory.poke(memAddress+288, 2016);
+        do Memory.poke(memAddress+320, 3696);
+        do Memory.poke(memAddress+352, 23610);
+        do Memory.poke(memAddress+384, 30750);
+        do Memory.poke(memAddress+416, 28686);
+        do Memory.poke(memAddress+448, 30750);
+        do Memory.poke(memAddress+480, 0);
+
+        return;
+    }
 }

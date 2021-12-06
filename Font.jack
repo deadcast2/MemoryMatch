@@ -9,7 +9,7 @@ class Font {
 
     method void dispose() {
         do Memory.deAlloc(this);
-        
+
         return;
     }
 

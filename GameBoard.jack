@@ -1,332 +1,332 @@
 class GameBoard {
-	field int difficulty;
-	field int seed;
-	field int cardCount;
-	field int selectedCard;
-	field int columnBreak;
-	field Array cards;
-	field Timer timer;
-	field Card lastFlippedCard;
-	field Card nullCard;
-	field String winLabel, loseLabel;
-	field boolean running;
+    field int difficulty;
+    field int seed;
+    field int cardCount;
+    field int selectedCard;
+    field int columnBreak;
+    field Array cards;
+    field Timer timer;
+    field Card lastFlippedCard;
+    field Card nullCard;
+    field String winLabel, loseLabel;
+    field boolean running;
 
     constructor GameBoard new(int Adifficulty, int ASeed) {
-		let difficulty = Adifficulty;
-		let seed = ASeed;
-		let selectedCard = 0;
-		let nullCard = Card.new(999, 0, 0);
-		let lastFlippedCard = nullCard;
-		let winLabel = "You win!";
-		let loseLabel = "You ran out of time. Try again!";
-		
-		if (difficulty = 0) {
-			let cardCount = 12;
-			let timer = Timer.new(45);
-		}
+        let difficulty = Adifficulty;
+        let seed = ASeed;
+        let selectedCard = 0;
+        let nullCard = Card.new(999, 0, 0);
+        let lastFlippedCard = nullCard;
+        let winLabel = "You win!";
+        let loseLabel = "You ran out of time. Try again!";
 
-		if (difficulty = 1) {
-			let cardCount = 20;
-			let timer = Timer.new(60);
-		}
+        if (difficulty = 0) {
+            let cardCount = 12;
+            let timer = Timer.new(45);
+        }
 
-		if (difficulty = 2) {
-			let cardCount = 30;
-			let timer = Timer.new(90);
-		}
+        if (difficulty = 1) {
+            let cardCount = 20;
+            let timer = Timer.new(60);
+        }
 
-		do drawBorder();
-		do createCards();
-		do shuffleCards();
-		do drawCards();
+        if (difficulty = 2) {
+            let cardCount = 30;
+            let timer = Timer.new(90);
+        }
+
+        do drawBorder();
+        do createCards();
+        do shuffleCards();
+        do drawCards();
 
         return this;
     }
 
     method void dispose() {
-		var int index;
-		var Card current;
+        var int index;
+        var Card current;
 
-		let index = 0;
+        let index = 0;
 
-		// Clean up cards
-		while (index < cardCount) {
-			let current = cards[index];
-			do current.dispose();
-			let index = index + 1;
-		}
+        // Clean up cards
+        while (index < cardCount) {
+            let current = cards[index];
+            do current.dispose();
+            let index = index + 1;
+        }
 
-		do timer.dispose();
-		do cards.dispose();
-		do nullCard.dispose();
-		do winLabel.dispose();
-		do loseLabel.dispose();
-		do Screen.clearScreen();
+        do timer.dispose();
+        do cards.dispose();
+        do nullCard.dispose();
+        do winLabel.dispose();
+        do loseLabel.dispose();
+        do Screen.clearScreen();
         do Memory.deAlloc(this);
 
         return;
     }
-	
-	method void wait() {
-      	var char key;
 
-		let running = true;
+    method void wait() {
+          var char key;
 
-		while (running) {
-			while (key = 0) {
-            	let key = Keyboard.keyPressed();
-				
-				if (timedOut()) {
-					return;
-				}
-         	}
+        let running = true;
 
-			let running = wantsToQuit(key);
-			
-			do updateSelection(key);
+        while (running) {
+            while (key = 0) {
+                let key = Keyboard.keyPressed();
 
-			do flipCard(key);
+                if (timedOut()) {
+                    return;
+                }
+             }
 
-			while (~(key = 0)) {
-				let key = Keyboard.keyPressed();
+            let running = wantsToQuit(key);
 
-				if (timedOut()) {
-					return;
-				}
-			}
-		}
+            do updateSelection(key);
 
-		return;
-	}
+            do flipCard(key);
 
-	method boolean timedOut() {
-		if (~(timer.tick())) {
-        	do Screen.clearScreen();
-			do Output.moveCursor(10, 16);
-			do Output.printString(loseLabel);
-			do Sys.wait(3000);
+            while (~(key = 0)) {
+                let key = Keyboard.keyPressed();
 
-			return true;
-		}
+                if (timedOut()) {
+                    return;
+                }
+            }
+        }
 
-		return false;
-	}
+        return;
+    }
 
-	method boolean wantsToQuit(int key) {
-		// Escape key
-		if (key = 140) {
-			return false;
-		}
+    method boolean timedOut() {
+        if (~(timer.tick())) {
+            do Screen.clearScreen();
+            do Output.moveCursor(10, 16);
+            do Output.printString(loseLabel);
+            do Sys.wait(3000);
 
-		return true;
-	}
+            return true;
+        }
 
-	method void updateSelection(int key) {
-		var Card current;
-		var int temp;
+        return false;
+    }
 
-		let current = cards[selectedCard];
-		do current.unselect();
+    method boolean wantsToQuit(int key) {
+        // Escape key
+        if (key = 140) {
+            return false;
+        }
 
-		// Up arrow
-		if (key = 131) { 
-			let temp = selectedCard - columnBreak;
+        return true;
+    }
 
-			if (temp > -1) {
-				let selectedCard = temp;
-			}
+    method void updateSelection(int key) {
+        var Card current;
+        var int temp;
 
-			// Jump to next row
-			if (temp < 0) {
-				let selectedCard = cardCount + temp;
-			}
-		}   
+        let current = cards[selectedCard];
+        do current.unselect();
+
+        // Up arrow
+        if (key = 131) {
+            let temp = selectedCard - columnBreak;
+
+            if (temp > -1) {
+                let selectedCard = temp;
+            }
+
+            // Jump to next row
+            if (temp < 0) {
+                let selectedCard = cardCount + temp;
+            }
+        }
 
         // Down arrow
-		if (key = 133) { 
-			let temp = selectedCard + columnBreak;
+        if (key = 133) {
+            let temp = selectedCard + columnBreak;
 
-			if (temp < cardCount) {
-				let selectedCard = temp;
-			}
+            if (temp < cardCount) {
+                let selectedCard = temp;
+            }
 
-			// Jump to next row
-			if (temp > (cardCount - 1)) {
-				let selectedCard = temp - cardCount;
-			}
-		}  
-        
-		// Left arrow
-		if (key = 130) { 
-			let selectedCard = selectedCard - 1;
+            // Jump to next row
+            if (temp > (cardCount - 1)) {
+                let selectedCard = temp - cardCount;
+            }
+        }
 
-			if(selectedCard < 0) {
-				let selectedCard = cardCount - 1;
-			}
-		}   
-        
-		// Right arrow
-		if (key = 132) { 
-			let selectedCard = selectedCard + 1;
+        // Left arrow
+        if (key = 130) {
+            let selectedCard = selectedCard - 1;
 
-			if(selectedCard = cardCount) {
-				let selectedCard = 0;
-			}
-		}   
+            if(selectedCard < 0) {
+                let selectedCard = cardCount - 1;
+            }
+        }
 
-		let current = cards[selectedCard];
-		do current.select();
+        // Right arrow
+        if (key = 132) {
+            let selectedCard = selectedCard + 1;
 
-		return;
-	}
+            if(selectedCard = cardCount) {
+                let selectedCard = 0;
+            }
+        }
 
-	method void flipCard(int key) {
-		var Card current;
+        let current = cards[selectedCard];
+        do current.select();
 
-		// Enter
-		if (key = 128) {
-			let current = cards[selectedCard];
+        return;
+    }
 
-			if (current.getIsMatched()) {
-				return;
-			}
+    method void flipCard(int key) {
+        var Card current;
 
-			if (lastFlippedCard.getIsFlipped()) {
-				if (current.flip()) {
-					if (lastFlippedCard.getType() = current.getType()) {
-						do lastFlippedCard.matched();
-						do current.matched();
-						do gameFinished();
-					} else {
-						do Sys.wait(400);
-						do lastFlippedCard.flip();
-						do current.flip();
-					}
-				}
+        // Enter
+        if (key = 128) {
+            let current = cards[selectedCard];
 
-				let lastFlippedCard = nullCard;
-				return;
-			}
+            if (current.getIsMatched()) {
+                return;
+            }
 
-			let lastFlippedCard = current;
-			do lastFlippedCard.flip();
-		}
-		
-		return;
-	}
+            if (lastFlippedCard.getIsFlipped()) {
+                if (current.flip()) {
+                    if (lastFlippedCard.getType() = current.getType()) {
+                        do lastFlippedCard.matched();
+                        do current.matched();
+                        do gameFinished();
+                    } else {
+                        do Sys.wait(400);
+                        do lastFlippedCard.flip();
+                        do current.flip();
+                    }
+                }
 
-	method void gameFinished() {
-		var int index;
-		var Card current;
+                let lastFlippedCard = nullCard;
+                return;
+            }
 
-		let index = 0;
+            let lastFlippedCard = current;
+            do lastFlippedCard.flip();
+        }
 
-		while (index < cardCount) {
-			let current = cards[index];
-			
-			if (~(current.getIsMatched())) {
-				return;
-			}
+        return;
+    }
 
-			let index = index + 1;
-		}
+    method void gameFinished() {
+        var int index;
+        var Card current;
 
-		do Screen.clearScreen();
-		do Output.moveCursor(10, 26);
-		do Output.printString(winLabel);
-		do Sys.wait(3000);
+        let index = 0;
 
-		let running = false;
+        while (index < cardCount) {
+            let current = cards[index];
 
-		return;
-	}
+            if (~(current.getIsMatched())) {
+                return;
+            }
 
-	method void createCards() {
-		var int index, row, col, columnStart, rand;
-		var Card current;
+            let index = index + 1;
+        }
 
-		let cards = Array.new(cardCount);
-		let index = 0;
-		let columnStart = 0;
-		let columnBreak = 10;
+        do Screen.clearScreen();
+        do Output.moveCursor(10, 26);
+        do Output.printString(winLabel);
+        do Sys.wait(3000);
 
-		// Setup a smaller card layout
-		if (difficulty = 0) {
-			let columnBreak = 6;
-			let columnStart = 2;
-		}
+        let running = false;
 
-		while (index < cardCount) {
-			// Go to next line when break point reached
-			if (col = columnBreak) {
-				let col = 0;
-				let row = row + 1;
-			}
-			
-			// Create cards in pairs.
-			let rand = Utils.randWithPrevious(Card.symbolCount(), rand, seed / (index + col + row + 1));
-			let cards[index] = Card.new(rand, row, col + columnStart);			
-			let cards[index + 1] = Card.new(rand, row, col + columnStart + 1);			
-			
-			// Select first card by default.
-			if (index = 0) {
-				let current = cards[index];
-				do current.select();
-			}
+        return;
+    }
 
-			let index = index + 2;
-			let col = col + 2;
-		}
+    method void createCards() {
+        var int index, row, col, columnStart, rand;
+        var Card current;
 
-		return;
-	}
+        let cards = Array.new(cardCount);
+        let index = 0;
+        let columnStart = 0;
+        let columnBreak = 10;
 
-	method void shuffleCards() {
-		var int index, temp, rand;
-		var Card current, next;
+        // Setup a smaller card layout
+        if (difficulty = 0) {
+            let columnBreak = 6;
+            let columnStart = 2;
+        }
 
-		while (index < cardCount) {			
-			let current = cards[index];
-			let temp = current.getType();
+        while (index < cardCount) {
+            // Go to next line when break point reached
+            if (col = columnBreak) {
+                let col = 0;
+                let row = row + 1;
+            }
 
-			let rand = Utils.randWithPrevious(cardCount, rand, seed / (index + 1));
-			let next = cards[rand];
-			do current.setType(next.getType());
-			do next.setType(temp);
+            // Create cards in pairs.
+            let rand = Utils.randWithPrevious(Card.symbolCount(), rand, seed / (index + col + row + 1));
+            let cards[index] = Card.new(rand, row, col + columnStart);
+            let cards[index + 1] = Card.new(rand, row, col + columnStart + 1);
 
-			let index = index + 1;
-		}
+            // Select first card by default.
+            if (index = 0) {
+                let current = cards[index];
+                do current.select();
+            }
 
-		return;
-	}
+            let index = index + 2;
+            let col = col + 2;
+        }
 
-	method void drawCards() {
-		var int index;
-		var Card current;
+        return;
+    }
 
-		while (index < cardCount) {			
-			let current = cards[index];
-			let index = index + 1;
-			
-			do current.draw();
-		}
+    method void shuffleCards() {
+        var int index, temp, rand;
+        var Card current, next;
 
-		return;
-	}
+        while (index < cardCount) {
+            let current = cards[index];
+            let temp = current.getType();
 
-	method void drawBorder() {
-		// Top line
-		do Screen.drawLine(8, 8, 502, 8);
+            let rand = Utils.randWithPrevious(cardCount, rand, seed / (index + 1));
+            let next = cards[rand];
+            do current.setType(next.getType());
+            do next.setType(temp);
 
-		// Bottom line
-		do Screen.drawLine(8, 248, 504, 248);
+            let index = index + 1;
+        }
 
-		// Left line
-		do Screen.drawLine(8, 8, 8, 248);
+        return;
+    }
 
-		// Right line
-		do Screen.drawLine(504, 8, 504, 248);
-		
-		return;
-	}
+    method void drawCards() {
+        var int index;
+        var Card current;
+
+        while (index < cardCount) {
+            let current = cards[index];
+            let index = index + 1;
+
+            do current.draw();
+        }
+
+        return;
+    }
+
+    method void drawBorder() {
+        // Top line
+        do Screen.drawLine(8, 8, 502, 8);
+
+        // Bottom line
+        do Screen.drawLine(8, 248, 504, 248);
+
+        // Left line
+        do Screen.drawLine(8, 8, 8, 248);
+
+        // Right line
+        do Screen.drawLine(504, 8, 504, 248);
+
+        return;
+    }
 }

@@ -1,158 +1,158 @@
 class MainMenu {
-	field Font font;
-	field int difficulty;
+    field Font font;
+    field int difficulty;
 
     constructor MainMenu new() {
-		let font = Font.new();
-		let difficulty = 0;
+        let font = Font.new();
+        let difficulty = 0;
 
         return this;
     }
 
     method void dispose() {
-		do font.dispose();
+        do font.dispose();
         do Screen.clearScreen();
         do Memory.deAlloc(this);
 
         return;
     }
 
-	method int wait() {
-		do drawHeader();
-		do drawDifficulties();
-		do drawInstructions();
-		do drawSelector(false);
-		do handleSelection();
+    method int wait() {
+        do drawHeader();
+        do drawDifficulties();
+        do drawInstructions();
+        do drawSelector(false);
+        do handleSelection();
 
-		return difficulty;
-	}
+        return difficulty;
+    }
 
-	method void handleSelection() {
-		var char key;
-		var boolean selecting;
+    method void handleSelection() {
+        var char key;
+        var boolean selecting;
 
-		let selecting = true;
+        let selecting = true;
 
-		while (selecting) {
-			while (key = 0) {
-            	let key = Keyboard.keyPressed();
-			}
+        while (selecting) {
+            while (key = 0) {
+                let key = Keyboard.keyPressed();
+            }
 
-			let selecting = madeSelection(key);
+            let selecting = madeSelection(key);
 
-			do drawSelector(true);
+            do drawSelector(true);
 
-			do moveSelector(key);
+            do moveSelector(key);
 
-			do drawSelector(false);
+            do drawSelector(false);
 
-			while (~(key = 0)) {
-				let key = Keyboard.keyPressed();
-			}
-		}
+            while (~(key = 0)) {
+                let key = Keyboard.keyPressed();
+            }
+        }
 
-		return;
-	}
+        return;
+    }
 
-	method boolean madeSelection(int key) {
-		// Enter
-		if (key = 128) {
-			return false;
-		}
+    method boolean madeSelection(int key) {
+        // Enter
+        if (key = 128) {
+            return false;
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	method void moveSelector(int key) {
-		// Up arrow
-		if (key = 131) { 
-			let difficulty = difficulty - 1;
+    method void moveSelector(int key) {
+        // Up arrow
+        if (key = 131) {
+            let difficulty = difficulty - 1;
 
-			if (difficulty < 0) {
-				let difficulty = 2;
-			}
-		}   
+            if (difficulty < 0) {
+                let difficulty = 2;
+            }
+        }
 
-		// Down arrow
-		if (key = 133) { 
-			let difficulty = difficulty + 1;
+        // Down arrow
+        if (key = 133) {
+            let difficulty = difficulty + 1;
 
-			if (difficulty > 2) {
-				let difficulty = 0;
-			}
-		} 
+            if (difficulty > 2) {
+                let difficulty = 0;
+            }
+        }
 
-		return;
-	}
+        return;
+    }
 
-	method void drawSelector(boolean clear) {
-		var int offset;
-		var int verticalOffset;
+    method void drawSelector(boolean clear) {
+        var int offset;
+        var int verticalOffset;
 
-		let verticalOffset = 13;
+        let verticalOffset = 13;
 
-		// Hard
-		let offset = 96 * 55 + verticalOffset;
-		
-		// Easy
-		if (difficulty = 0) {
-			let offset = 32 * 121 + verticalOffset;
-		} 
-		
-		// Medium
-		if (difficulty = 1) {
-			let offset = 128 * 36 + verticalOffset;
-		} 
+        // Hard
+        let offset = 96 * 55 + verticalOffset;
 
-		do font.drawArrow(offset);
-		
-		if (clear) {
-			do font.drawBlankArrow(offset);
-		}
-		
-		return;
-	}
+        // Easy
+        if (difficulty = 0) {
+            let offset = 32 * 121 + verticalOffset;
+        }
 
-	method void drawDifficulties() {
-		do Output.moveCursor(11, 30);
-		do Output.printString("EASY");
-		
-		do Output.moveCursor(13, 29);
-		do Output.printString("MEDIUM");
+        // Medium
+        if (difficulty = 1) {
+            let offset = 128 * 36 + verticalOffset;
+        }
 
-		do Output.moveCursor(15, 30);
-		do Output.printString("HARD");
+        do font.drawArrow(offset);
 
-		return;
-	}
+        if (clear) {
+            do font.drawBlankArrow(offset);
+        }
 
-	method void drawInstructions() {
-		do Screen.drawLine(5, 210, 507, 210);
-		do Output.moveCursor(20, 1);
-		do Output.printString("Find all matching cards by using the arrow keys to choose and   the enter key to flip. Have fun!");
-		
-		return;
-	}
+        return;
+    }
 
-	method void drawHeader() {
-		var int verticalOffset;
-		var int offset;
+    method void drawDifficulties() {
+        do Output.moveCursor(11, 30);
+        do Output.printString("EASY");
 
-		let verticalOffset = 10;
-		let offset = 480 * 5 + verticalOffset;
+        do Output.moveCursor(13, 29);
+        do Output.printString("MEDIUM");
 
-		do font.drawM(0 + offset);
-		do font.drawE(1 + offset);
-		do font.drawM(2 + offset);
-		do font.drawO(3 + offset);
-		do font.drawR(4 + offset);
-		do font.drawY(5 + offset);
-		do font.drawSpace(6 + offset);
-		do font.drawM(7 + offset);
-		do font.drawA(8 + offset);
-		do font.drawT(9 + offset);
-		do font.drawC(10 + offset);
-		do font.drawH(11 + offset);
+        do Output.moveCursor(15, 30);
+        do Output.printString("HARD");
+
+        return;
+    }
+
+    method void drawInstructions() {
+        do Screen.drawLine(5, 210, 507, 210);
+        do Output.moveCursor(20, 1);
+        do Output.printString("Find all matching cards by using the arrow keys to choose and   the enter key to flip. Have fun!");
+
+        return;
+    }
+
+    method void drawHeader() {
+        var int verticalOffset;
+        var int offset;
+
+        let verticalOffset = 10;
+        let offset = 480 * 5 + verticalOffset;
+
+        do font.drawM(0 + offset);
+        do font.drawE(1 + offset);
+        do font.drawM(2 + offset);
+        do font.drawO(3 + offset);
+        do font.drawR(4 + offset);
+        do font.drawY(5 + offset);
+        do font.drawSpace(6 + offset);
+        do font.drawM(7 + offset);
+        do font.drawA(8 + offset);
+        do font.drawT(9 + offset);
+        do font.drawC(10 + offset);
+        do font.drawH(11 + offset);
 
         return;
     }
