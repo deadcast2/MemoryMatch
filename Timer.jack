@@ -6,7 +6,7 @@ class Timer {
     constructor Timer new(int Alength) {
         let length = Alength;
         let tick = 25001;
-        let label = "Timer: ";
+        let label = "Time remaining: ";
 
         do Output.moveCursor(21, 2);
         do Output.printString(label);
@@ -24,8 +24,14 @@ class Timer {
     method boolean tick() {
         let tick = tick + 1;
 
-        if (tick > 22000) {
-            do Output.moveCursor(21, 9);
+        if (tick > 20000) {
+            do Output.moveCursor(21, 18);
+            
+            // Push on additional zero to format time transition to single digit.
+            if (length < 10) {
+                do Output.printInt(0);
+            }
+
             do Output.printInt(length);
 
             let length = length - 1;
