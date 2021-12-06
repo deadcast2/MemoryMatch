@@ -1,18 +1,21 @@
 class Card {
     field int type, row, col;
-    field boolean flipped, isMatched;
+    field int width, height, memAddress;
+    field boolean isFlipped, isMatched;
 
     constructor Card new(int Atype, int Arow, int Acol) {
         let type = Atype;
         let row = Arow;
         let col = Acol;
-        let flipped = false;
+        let isFlipped = false;
         let isMatched = false;
+        let width = 48;
+        let height = 64;
 
         return this;
     }
 
-    function int symbolCount() {
+    function int getSymbolCount() {
         return 5;
     }
 
@@ -48,15 +51,15 @@ class Card {
             return false;
         }
 
-        let flipped = ~flipped;
+        let isFlipped = ~isFlipped;
 
         do drawSymbol();
 
-        return flipped;
+        return isFlipped;
     }
 
     method boolean getIsFlipped() {
-        return flipped;
+        return isFlipped;
     }
 
     method int getType() {
@@ -81,10 +84,7 @@ class Card {
 
     method void drawSelection() {
         var int x, y;
-        var int width, height;
 
-        let width = 48;
-        let height = 64;
         let x = (width * col) + 16;
         let y = (height * row) + 14;
 
@@ -109,13 +109,10 @@ class Card {
 
     method void drawBorder() {
         var int x, y, margin;
-        var int width, height;
 
-        let width = 48;
-        let height = 64;
-        let margin = 8;
         let x = (width * col) + 12;
         let y = (height * row) + 10;
+        let margin = 8;
 
         // Top line
         do Screen.drawLine(x + margin, y + margin, width + x, y + margin);
@@ -142,8 +139,9 @@ class Card {
 
         do clearSymbol(x + y);
 
-        if (~(flipped)) {
+        if (~(isFlipped)) {
             do drawSymbol0(x + y);
+
             return;
         }
 
@@ -179,7 +177,6 @@ class Card {
     }
 
     method void clearSymbol(int location) {
-        var int memAddress;
         let memAddress = 16384+location;
 
         do Memory.poke(memAddress+0, 0);
@@ -203,7 +200,6 @@ class Card {
     }
 
     method void drawSymbol0(int location) {
-        var int memAddress;
         let memAddress = 16384+location;
 
         do Memory.poke(memAddress+0, 0);
@@ -227,7 +223,6 @@ class Card {
     }
 
     method void drawSymbol1(int location) {
-        var int memAddress;
         let memAddress = 16384+location;
 
         do Memory.poke(memAddress+0, 0);
@@ -251,7 +246,6 @@ class Card {
     }
 
     method void drawSymbol2(int location) {
-        var int memAddress;
         let memAddress = 16384+location;
 
         do Memory.poke(memAddress+0, 0);
@@ -275,7 +269,6 @@ class Card {
     }
 
     method void drawSymbol3(int location) {
-        var int memAddress;
         let memAddress = 16384+location;
 
         do Memory.poke(memAddress+0, 0);
@@ -299,7 +292,6 @@ class Card {
     }
 
     method void drawSymbol4(int location) {
-        var int memAddress;
         let memAddress = 16384+location;
 
         do Memory.poke(memAddress+0, 0);
@@ -323,7 +315,6 @@ class Card {
     }
 
     method void drawSymbol5(int location) {
-        var int memAddress;
         let memAddress = 16384+location;
 
         do Memory.poke(memAddress+0, 0);

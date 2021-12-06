@@ -1,13 +1,8 @@
 class GameBoard {
-    field int difficulty;
-    field int seed;
-    field int cardCount;
-    field int selectedCard;
-    field int columnBreak;
+    field int difficulty, seed, cardCount, selectedCard, columnBreak;
     field Array cards;
     field Timer timer;
-    field Card lastFlippedCard;
-    field Card nullCard;
+    field Card lastFlippedCard, nullCard;
     field String winLabel, loseLabel;
     field boolean running;
 
@@ -20,23 +15,9 @@ class GameBoard {
         let winLabel = "You win!";
         let loseLabel = "You ran out of time. Try again!";
 
-        if (difficulty = 0) {
-            let cardCount = 12;
-            let timer = Timer.new(45);
-        }
-
-        if (difficulty = 1) {
-            let cardCount = 20;
-            let timer = Timer.new(60);
-        }
-
-        if (difficulty = 2) {
-            let cardCount = 30;
-            let timer = Timer.new(90);
-        }
-
+        do prepareDifficulty();
         do drawBorder();
-        do createCards();
+        do layoutCards();
         do shuffleCards();
         do drawCards();
 
@@ -68,7 +49,7 @@ class GameBoard {
     }
 
     method void wait() {
-          var char key;
+        var char key;
 
         let running = true;
 
@@ -194,10 +175,13 @@ class GameBoard {
             if (lastFlippedCard.getIsFlipped()) {
                 if (current.flip()) {
                     if (lastFlippedCard.getType() = current.getType()) {
+                        // Flipped cards do match so marked them as finished and check if all cards
+                        // have been matched.
                         do lastFlippedCard.matched();
                         do current.matched();
-                        do gameFinished();
+                        do isGameFinished();
                     } else {
+                        // Cards flipped do not match so flip them back over.
                         do Sys.wait(400);
                         do lastFlippedCard.flip();
                         do current.flip();
@@ -215,7 +199,7 @@ class GameBoard {
         return;
     }
 
-    method void gameFinished() {
+    method void isGameFinished() {
         var int index;
         var Card current;
 
@@ -241,7 +225,7 @@ class GameBoard {
         return;
     }
 
-    method void createCards() {
+    method void layoutCards() {
         var int index, row, col, columnStart, rand;
         var Card current;
 
@@ -250,7 +234,7 @@ class GameBoard {
         let columnStart = 0;
         let columnBreak = 10;
 
-        // Setup a smaller card layout
+        // Setup a smaller card layout for easy
         if (difficulty = 0) {
             let columnBreak = 6;
             let columnStart = 2;
@@ -263,12 +247,12 @@ class GameBoard {
                 let row = row + 1;
             }
 
-            // Create cards in pairs.
-            let rand = Utils.randWithPrevious(Card.symbolCount(), rand, seed / (index + col + row + 1));
+            // Create cards in pairs
+            let rand = Utils.randWithPrevious(Card.getSymbolCount(), rand, seed / (index + col + row + 1));
             let cards[index] = Card.new(rand, row, col + columnStart);
             let cards[index + 1] = Card.new(rand, row, col + columnStart + 1);
 
-            // Select first card by default.
+            // Select first card by default
             if (index = 0) {
                 let current = cards[index];
                 do current.select();
@@ -289,6 +273,7 @@ class GameBoard {
             let current = cards[index];
             let temp = current.getType();
 
+            // Pick a "random" card and swap types with it.
             let rand = Utils.randWithPrevious(cardCount, rand, seed / (index + 1));
             let next = cards[rand];
             do current.setType(next.getType());
@@ -326,6 +311,25 @@ class GameBoard {
 
         // Right line
         do Screen.drawLine(504, 8, 504, 248);
+
+        return;
+    }
+
+    method void prepareDifficulty() {
+        if (difficulty = 0) {
+            let cardCount = 12;
+            let timer = Timer.new(45);
+        }
+
+        if (difficulty = 1) {
+            let cardCount = 20;
+            let timer = Timer.new(60);
+        }
+
+        if (difficulty = 2) {
+            let cardCount = 30;
+            let timer = Timer.new(90);
+        }
 
         return;
     }

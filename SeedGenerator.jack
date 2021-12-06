@@ -19,27 +19,11 @@ class SeedGenerator {
         return;
     }
 
-    method void drawProgressBar(int progress) {
-        var int x, y, width, height;
-
-        let x = 206;
-        let y = 135;
-        let width = 100;
-        let height = 10;
-
-        do Screen.drawLine(x, y, x + width, y);
-        do Screen.drawLine(x, y+height, x + width, y+height);
-        do Screen.drawLine(x, y, x, y+height);
-        do Screen.drawLine(x+width, y, x+width, y+height);
-        do Screen.drawRectangle(x, y, x + (progress * 10), y + height);
-
-        return;
-    }
-
     method int wait() {
         var int keysPressed, keyTotal, key;
         let keysPressed = 0;
 
+        // Create a seed used for random number generation by listening for key presses
         while (keysPressed < 10) {
             while (key = 0) {
                 let key = Keyboard.keyPressed();
@@ -56,5 +40,22 @@ class SeedGenerator {
         }
 
         return Math.max(100, Math.min(keyTotal, 2500));
+    }
+
+    method void drawProgressBar(int progress) {
+        var int x, y, width, height;
+
+        let x = 206;
+        let y = 135;
+        let width = 100;
+        let height = 10;
+
+        do Screen.drawLine(x, y, x + width, y);
+        do Screen.drawLine(x, y+height, x + width, y+height);
+        do Screen.drawLine(x, y, x, y+height);
+        do Screen.drawLine(x+width, y, x+width, y+height);
+        do Screen.drawRectangle(x, y, x + (progress * 10), y + height);
+
+        return;
     }
 }

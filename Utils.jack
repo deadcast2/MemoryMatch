@@ -7,6 +7,7 @@ class Utils {
         return Utils.mod(seed, a);
     }
 
+    // Take into account a previous value to produce a better next value
     function int randWithPrevious(int a, int prev, int seed) {
         var int temp;
         var int index;
