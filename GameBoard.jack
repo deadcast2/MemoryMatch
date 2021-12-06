@@ -35,7 +35,6 @@ class GameBoard {
 			let timer = Timer.new(90);
 		}
 
-
 		do drawBorder();
 		do createCards();
 		do shuffleCards();
@@ -198,11 +197,8 @@ class GameBoard {
 						do lastFlippedCard.matched();
 						do current.matched();
 						do gameFinished();
-					}
-
-					if (~(lastFlippedCard.getType() = current.getType())) {
+					} else {
 						do Sys.wait(400);
-
 						do lastFlippedCard.flip();
 						do current.flip();
 					}
