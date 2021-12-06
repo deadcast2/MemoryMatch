@@ -96,7 +96,7 @@ class MainMenu {
 		
 		// Easy
 		if (difficulty = 0) {
-			let offset = 128 * 30 + verticalOffset;
+			let offset = 32 * 121 + verticalOffset;
 		} 
 		
 		// Medium
